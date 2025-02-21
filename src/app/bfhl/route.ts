@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(requrest: NextRequest) {
+export async function GET() {
   return NextResponse.json(
     {
       operation_code: 1,
@@ -17,7 +17,6 @@ export async function POST(request: NextRequest) {
   try {
     const { data }: { data: string[] } = await request.json();
 
-    // ✅ Stop execution if any item is invalid
     for (const str of data) {
       if (!isValidInput(str)) {
         return NextResponse.json(
@@ -30,11 +29,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // ✅ Correct filtering of numbers and alphabets
     const numbers = data.filter((item) => /^\d+$/.test(item)); // Only digits
     const alphabets = data.filter((item) => /^[a-zA-Z]+$/.test(item)); // Only letters
 
-    // ✅ Find highest alphabet (case insensitive)
     let highest_alphabet: string[] = [];
     if (alphabets.length > 0) {
       highest_alphabet = [
@@ -53,7 +50,7 @@ export async function POST(request: NextRequest) {
       alphabets,
       highest_alphabet,
     });
-  } catch (error: any) {
+  } catch {
     return NextResponse.json(
       {
         is_success: false,
